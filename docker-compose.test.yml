@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  # PostgreSQL 主数据库（测试环境）
+  postgres:
+    image: postgres:15-alpine
+    container_name: ai-test-pilot-postgres
+    environment:
+      POSTGRES_USER: aitest
+      POSTGRES_PASSWORD: aitest_pwd_2024
+      POSTGRES_DB: ai_test_pilot_test
+    volumes:
+      - postgres_test_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aitest"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Redis 缓存/队列
+  redis:
+    image: redis:7-alpine
+    container_name: ai-test-pilot-redis
+    ports:
+      - "6380:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_test_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Qdrant 向量数据库
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: ai-test-pilot-qdrant
+    ports:
+      - "6334:6333"
+    volumes:
+      - qdrant_test_data:/qdrant/storage
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 后端（FastAPI）
+  backend:
+    build: ./backend
+    container_name: ai-test-pilot-backend
+    ports:
+      - "8002:8000"
+    environment:
+      - DATABASE_URL=postgresql://aitest:aitest_pwd_2024@postgres:5432/ai_test_pilot_test
+      - REDIS_URL=redis://redis:6379/0
+      - QDRANT_URL=http://qdrant:6333
+      - ENV=test
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+
+  # 前端（React）
+  frontend:
+    build: ./frontend
+    container_name: ai-test-pilot-frontend
+    ports:
+      - "3001:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://192.168.31.44:8002
+    depends_on:
+      - backend
+
+volumes:
+  postgres_test_data:
+  redis_test_data:
+  qdrant_test_data:
