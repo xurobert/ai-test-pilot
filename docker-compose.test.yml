@@ -67,14 +67,14 @@ services:
       qdrant:
         condition: service_healthy
 
-  # 前端（React）
+  # 前端（React + Vite + Nginx）
   frontend:
     build: ./frontend
     container_name: ai-test-pilot-frontend
     ports:
-      - "3001:3000"
+      - "3001:80"
     environment:
-      - NEXT_PUBLIC_API_URL=http://192.168.31.44:8002
+      - NEXT_PUBLIC_API_URL=http://localhost:8002
     depends_on:
       - backend
 
