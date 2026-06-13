@@ -26,7 +26,7 @@ export const useAuthStore = create<AuthState>()(
       setUser: (user) => set({ user }),
       logout: () => set({ token: null, user: null, isAuthenticated: false }),
       setLoading: (loading) => set({ isLoading: loading }),
-      hasRole: (role) => get().user?.role === role ?? false,
+      hasRole: (role) => get().user?.role === role,
       hasAnyRole: (roles) =>
         get().user ? roles.includes(get().user!.role) : false,
     }),

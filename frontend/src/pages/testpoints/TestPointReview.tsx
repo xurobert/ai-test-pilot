@@ -31,13 +31,13 @@ const TestPointReview = () => {
 
   return (
     <Card title="测试点审核">
-      <List dataSource={points.filter(p => p.status === 'draft')} renderItem={(item: TestPoint) => (
+      <List dataSource={points.filter(p => p.status === 'pending')} renderItem={(item: TestPoint) => (
         <List.Item actions={[
           <Button type="primary" onClick={() => { setSelected(item); setModalOpen(true) }}>审核</Button>
         ]}>
           <List.Item.Meta
             title={<Space><Tag color={getPriorityColor(item.priority)}>{item.priority}</Tag><span>{item.content}</span></Space>}
-            description={`置信度: ${item.confidenceScore} | 来源: ${item.sourceChunk}`}
+            description={`置信度: ${item.confidence} | 来源: ${item.requirementTitle}`}
           />
         </List.Item>
       )} />
