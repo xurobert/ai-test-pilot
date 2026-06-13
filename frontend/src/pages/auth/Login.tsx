@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Form, Input, Button, Checkbox, Card, Typography, message } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { login } from '@/api/auth'
 import { useAuthStore } from '@/stores/authStore'
 import type { LoginForm } from '@/types'
@@ -71,6 +71,11 @@ export default function Login() {
             登录
           </Button>
         </Form.Item>
+        <div style={{ textAlign: 'center', marginTop: 16 }}>
+          <Typography.Text type="secondary">
+            没有账号？ <Link to="/register">立即注册</Link>
+          </Typography.Text>
+        </div>
       </Form>
     </Card>
   )
