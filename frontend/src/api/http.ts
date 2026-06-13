@@ -3,7 +3,7 @@ import { useAuthStore } from '@/stores/authStore'
 import { showError } from '@/utils/helpers'
 
 const http: AxiosInstance = axios.create({
-  baseURL: '/api',
+  baseURL: '/api/v1',
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
