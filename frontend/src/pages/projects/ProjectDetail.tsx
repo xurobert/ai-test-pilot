@@ -18,11 +18,11 @@ const ProjectDetail = () => {
   return (
     <Card title={project?.name || '项目详情'}>
       <p>{project?.description}</p>
-      <Tabs defaultActiveKey="requirements">
-        <Tabs.TabPane tab="需求" key="requirements">需求列表占位</Tabs.TabPane>
-        <Tabs.TabPane tab="测试点" key="testpoints">测试点列表占位</Tabs.TabPane>
-        <Tabs.TabPane tab="用例" key="testcases">用例列表占位</Tabs.TabPane>
-      </Tabs>
+      <Tabs defaultActiveKey="requirements" items={[
+        { key: 'requirements', label: '需求', children: <div>需求列表占位</div> },
+        { key: 'testpoints', label: '测试点', children: <div>测试点列表占位</div> },
+        { key: 'testcases', label: '用例', children: <div>用例列表占位</div> },
+      ]} />
     </Card>
   )
 }

@@ -1,21 +1,19 @@
 import { createBrowserRouter } from 'react-router-dom'
-import { lazy, Suspense } from 'react'
 import MainLayout from './layouts/MainLayout'
 import AuthLayout from './layouts/AuthLayout'
-import LoadingFallback from './components/LoadingFallback'
 
-// Lazy load pages for code splitting
-const Login = lazy(() => import('./pages/auth/Login'))
-const Register = lazy(() => import('./pages/auth/Register'))
-const Profile = lazy(() => import('./pages/auth/Profile'))
-const ProjectList = lazy(() => import('./pages/projects/ProjectList'))
-const ProjectDetail = lazy(() => import('./pages/projects/ProjectDetail'))
-const PrdUpload = lazy(() => import('./pages/requirements/PrdUpload'))
-const TestPointList = lazy(() => import('./pages/testpoints/TestPointList'))
-const TestPointReview = lazy(() => import('./pages/testpoints/TestPointReview'))
-const TraceMatrix = lazy(() => import('./pages/trace/TraceMatrix'))
-const Forbidden = lazy(() => import('./pages/Forbidden'))
-const NotFound = lazy(() => import('./pages/NotFound'))
+// Direct imports (no lazy for MVP — avoids React Suspense error #426)
+import Login from './pages/auth/Login'
+import Register from './pages/auth/Register'
+import Profile from './pages/auth/Profile'
+import ProjectList from './pages/projects/ProjectList'
+import ProjectDetail from './pages/projects/ProjectDetail'
+import PrdUpload from './pages/requirements/PrdUpload'
+import TestPointList from './pages/testpoints/TestPointList'
+import TestPointReview from './pages/testpoints/TestPointReview'
+import TraceMatrix from './pages/trace/TraceMatrix'
+import Forbidden from './pages/Forbidden'
+import NotFound from './pages/NotFound'
 
 const router = createBrowserRouter([
   {
@@ -28,7 +26,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/register',
-    element: <AuthLayout><Register /></AuthLayout>,
+    element: <MainLayout><Register /></MainLayout>,
   },
   {
     path: '/profile',
@@ -47,7 +45,15 @@ const router = createBrowserRouter([
     element: <MainLayout><PrdUpload /></MainLayout>,
   },
   {
+    path: '/requirements/upload',
+    element: <MainLayout><PrdUpload /></MainLayout>,
+  },
+  {
     path: '/projects/:id/testpoints',
+    element: <MainLayout><TestPointList /></MainLayout>,
+  },
+  {
+    path: '/test-points',
     element: <MainLayout><TestPointList /></MainLayout>,
   },
   {
@@ -55,7 +61,15 @@ const router = createBrowserRouter([
     element: <MainLayout><TestPointReview /></MainLayout>,
   },
   {
+    path: '/test-points/review',
+    element: <MainLayout><TestPointReview /></MainLayout>,
+  },
+  {
     path: '/projects/:id/trace',
+    element: <MainLayout><TraceMatrix /></MainLayout>,
+  },
+  {
+    path: '/trace-matrix',
     element: <MainLayout><TraceMatrix /></MainLayout>,
   },
   {
