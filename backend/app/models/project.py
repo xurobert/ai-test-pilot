@@ -7,9 +7,9 @@ from app.db.base import Base
 
 
 class ProjectStatus(PyEnum):
-    ACTIVE = "active"
-    ARCHIVED = "archived"
-    DRAFT = "draft"
+    ACTIVE = "ACTIVE"
+    ARCHIVED = "ARCHIVED"
+    DRAFT = "DRAFT"
 
 
 class Project(Base):

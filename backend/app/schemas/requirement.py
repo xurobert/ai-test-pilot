@@ -9,11 +9,11 @@ from app.schemas.test_point import TestPointResponse
 
 
 class RequirementStatus(str, Enum):
-    DRAFT = "draft"
-    ANALYZING = "analyzing"
-    ANALYZED = "analyzed"
-    APPROVED = "approved"
-    REJECTED = "rejected"
+    DRAFT = "DRAFT"
+    ANALYZING = "ANALYZING"
+    ANALYZED = "ANALYZED"
+    APPROVED = "APPROVED"
+    REJECTED = "REJECTED"
 
 
 class RequirementBase(BaseModel):

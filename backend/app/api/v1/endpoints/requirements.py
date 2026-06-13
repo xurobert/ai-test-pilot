@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
+from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, Form
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List, Optional
 
@@ -99,22 +99,46 @@ async def delete_requirement(
     return success_response(message="Requirement deleted")
 
 
-@router.post("/{requirement_id}/upload-prd", response_model=dict)
-async def upload_prd(
-    requirement_id: int,
+@router.post("/upload", response_model=dict)
+async def upload_prd_new(
     file: UploadFile = File(...),
+    project_id: str = Form(...),
     db: AsyncSession = Depends(get_db),
     current_user: UserInDB = Depends(get_current_active_user),
 ) -> dict:
-    """Upload PRD file for requirement."""
-    requirement = await RequirementService.get_by_id(db, requirement_id)
-    if not requirement:
-        raise NotFoundException("Requirement not found")
-    file_path = await save_upload_file(file, f"prd/{requirement_id}")
+    """Upload PRD file for a project."""
+    # Validate file type
+    allowed_types = [
+        'application/pdf',
+        'application/octet-stream',  # Some browsers send this for PDFs
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'text/markdown',
+        'text/plain',
+    ]
+    if file.content_type not in allowed_types:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Unsupported file type: {file.content_type}. Allowed: PDF, Word, Markdown",
+        )
+    
+    # Save file
+    file_path = await save_upload_file(file, f"prd/{project_id}")
+    
+    # Create a requirement entry
+    requirement_in = RequirementCreate(
+        project_id=int(project_id),
+        title=file.filename or "Uploaded PRD",
+        description="",
+    )
+    requirement = await RequirementService.create(db, requirement_in)
+    
+    # Update with file path
     updated = await RequirementService.update_prd_path(db, requirement, file_path)
+    
     return success_response(
         data=RequirementResponse.model_validate(updated).model_dump(),
-        message="PRD uploaded",
+        message="PRD uploaded successfully",
     )
 
 

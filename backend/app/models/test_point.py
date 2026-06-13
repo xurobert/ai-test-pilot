@@ -7,16 +7,16 @@ from app.db.base import Base
 
 
 class TestPointPriority(PyEnum):
-    HIGH = "high"
-    MEDIUM = "medium"
-    LOW = "low"
+    HIGH = "HIGH"
+    MEDIUM = "MEDIUM"
+    LOW = "LOW"
 
 
 class TestPointStatus(PyEnum):
-    PENDING = "pending"
-    CONFIRMED = "confirmed"
-    MODIFIED = "modified"
-    REJECTED = "rejected"
+    PENDING = "PENDING"
+    CONFIRMED = "CONFIRMED"
+    MODIFIED = "MODIFIED"
+    REJECTED = "REJECTED"
 
 
 class TestPoint(Base):

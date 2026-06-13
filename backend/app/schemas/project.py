@@ -7,9 +7,9 @@ from pydantic import BaseModel, Field
 
 
 class ProjectStatus(str, Enum):
-    ACTIVE = "active"
-    ARCHIVED = "archived"
-    DRAFT = "draft"
+    ACTIVE = "ACTIVE"
+    ARCHIVED = "ARCHIVED"
+    DRAFT = "DRAFT"
 
 
 class ProjectBase(BaseModel):

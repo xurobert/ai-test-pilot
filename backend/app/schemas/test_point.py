@@ -7,16 +7,16 @@ from pydantic import BaseModel, Field
 
 
 class TestPointPriority(str, Enum):
-    HIGH = "high"
-    MEDIUM = "medium"
-    LOW = "low"
+    HIGH = "HIGH"
+    MEDIUM = "MEDIUM"
+    LOW = "LOW"
 
 
 class TestPointStatus(str, Enum):
-    PENDING = "pending"
-    CONFIRMED = "confirmed"
-    MODIFIED = "modified"
-    REJECTED = "rejected"
+    PENDING = "PENDING"
+    CONFIRMED = "CONFIRMED"
+    MODIFIED = "MODIFIED"
+    REJECTED = "REJECTED"
 
 
 class TestPointBase(BaseModel):

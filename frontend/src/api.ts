@@ -51,7 +51,8 @@ export const requirementApi = {
     formData.append('file', file)
     formData.append('project_id', projectId)
     return api.post('/requirements/upload', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
+      // Don't manually set Content-Type - axios will set it with proper boundary
+      headers: { 'Content-Type': undefined },
     })
   },
   analyze: (id: string, data: { analysisDepth: string; focusAreas: string[] }) =>

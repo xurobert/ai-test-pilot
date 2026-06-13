@@ -7,11 +7,11 @@ from app.db.base import Base
 
 
 class RequirementStatus(PyEnum):
-    DRAFT = "draft"
-    ANALYZING = "analyzing"
-    ANALYZED = "analyzed"
-    APPROVED = "approved"
-    REJECTED = "rejected"
+    DRAFT = "DRAFT"
+    ANALYZING = "ANALYZING"
+    ANALYZED = "ANALYZED"
+    APPROVED = "APPROVED"
+    REJECTED = "REJECTED"
 
 
 class Requirement(Base):
