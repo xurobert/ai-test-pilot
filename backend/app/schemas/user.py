@@ -7,12 +7,12 @@ from pydantic import BaseModel, EmailStr, Field
 
 
 class UserRole(str, Enum):
-    TE = "te"
-    TAE = "tae"
-    TM = "tm"
-    PM = "pm"
-    DEV = "dev"
-    ADMIN = "admin"
+    TE = "TE"
+    TAE = "TAE"
+    TM = "TM"
+    PM = "PM"
+    DEV = "DEV"
+    ADMIN = "ADMIN"
 
 
 class UserBase(BaseModel):
@@ -27,8 +27,12 @@ class UserCreate(UserBase):
 
 
 class UserLogin(BaseModel):
-    email: EmailStr
-    password: str
+    email: Optional[EmailStr] = None
+    username: Optional[str] = Field(None, min_length=3, max_length=100)
+    password: str = Field(..., min_length=1, max_length=100)
+    
+    def get_identifier(self) -> str:
+        return self.email or self.username or ""
 
 
 class UserUpdate(BaseModel):

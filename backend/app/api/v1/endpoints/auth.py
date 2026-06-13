@@ -20,14 +20,8 @@ router = APIRouter()
 async def register(
     user_in: UserCreate,
     db: AsyncSession = Depends(get_db),
-    current_user: UserInDB = Depends(get_current_active_user),
 ) -> dict:
-    """Register a new user (admin only)."""
-    if current_user.role != UserRole.ADMIN:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Only admin can register users",
-        )
+    """Register a new user."""
     existing = await UserService.get_by_email(db, user_in.email)
     if existing:
         raise HTTPException(
@@ -53,7 +47,10 @@ async def login(
     db: AsyncSession = Depends(get_db),
 ) -> dict:
     """Authenticate user and return tokens."""
-    user = await UserService.get_by_email(db, credentials.email)
+    identifier = credentials.get_identifier()
+    user = await UserService.get_by_email(db, identifier)
+    if not user and credentials.username:
+        user = await UserService.get_by_username(db, credentials.username)
     if not user or not verify_password(credentials.password, user.password_hash):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -68,7 +65,7 @@ async def login(
     refresh_token = create_refresh_token({"sub": str(user.id)})
     return success_response(
         data={
-            "access_token": access_token,
+            "token": access_token,
             "refresh_token": refresh_token,
             "token_type": "bearer",
             "user": {

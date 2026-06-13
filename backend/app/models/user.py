@@ -9,12 +9,12 @@ from app.db.base import Base
 
 
 class UserRole(PyEnum):
-    TE = "te"          # Test Engineer
-    TAE = "tae"        # Test Automation Engineer
-    TM = "tm"          # Test Manager
-    PM = "pm"          # Product Manager
-    DEV = "dev"        # Developer
-    ADMIN = "admin"    # Administrator
+    TE = "TE"          # Test Engineer
+    TAE = "TAE"        # Test Automation Engineer
+    TM = "TM"          # Test Manager
+    PM = "PM"          # Product Manager
+    DEV = "DEV"        # Developer
+    ADMIN = "ADMIN"    # Administrator
 
 
 class User(Base):
